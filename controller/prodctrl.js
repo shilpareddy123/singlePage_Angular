@@ -1,4 +1,4 @@
-angular.module('mainApp',[]).controller('prodctrl',[''] function ($scope, $firebase, Myservice, $timeout,filterFilter) {
+angular.module('mainApp').controller('prodctrl', function ($scope, $firebase, Myservice, $timeout,filterFilter) {
     var items;
     $scope.product={};
     $scope.usemanufact={};
@@ -37,13 +37,15 @@ angular.module('mainApp',[]).controller('prodctrl',[''] function ($scope, $fireb
             for (var i in $scope.usemanufact) {
                 if ($scope.usemanufact[i]) {
                     console.log("i:"+i)
-                    selected = true;
+        Myservice.getDatabase(function(database)              
+        selected = true;
                     if (i == p.manufacturer) {
                         filterAftermanufact.push(p);
                         break;
                     }
-        if (!selected) {
-            filterAftermanufact = $scope.uses
+                }
+            }
+        }
         if (!selected) {
             filterAftermanufact = $scope.usespecs;
         }
@@ -67,7 +69,11 @@ angular.module('mainApp',[]).controller('prodctrl',[''] function ($scope, $fireb
         if (!selected) {
             filterAfterStorage = filterAftermanufact;
         }
+
+        if(osGroup!=null ||){
+
         $scope.osGroup = uniqueItems(filterAfterStorage, 'os');
+
         var filterAfterOs = [];
         selected = false;
         for (var j in filterAfterStorage) {
@@ -78,12 +84,17 @@ angular.module('mainApp',[]).controller('prodctrl',[''] function ($scope, $fireb
                     if (i == p.os) {
                         filterAfterOs.push(p);
                         break;
+                      }
                     }
                 }
             }
         }
+
         if (!selected) {
             filterAfterOs = filterAfterStorage;
+        }
+        else {
+          console.log('error');
         }
         $scope.cameraGroup = uniqueItems(filterAfterOs, 'camera');
         var filterAftercamera = [];
@@ -114,7 +125,13 @@ angular.module('mainApp',[]).controller('prodctrl',[''] function ($scope, $fireb
                }
            })
        })
+
+  if(prodlist.length>0){
        $scope.filteredproduct=prodlist;
+}
+else{
+  console.log('not present');
+}
        }, true);
         })
      $scope.dispSingle=function(item){
